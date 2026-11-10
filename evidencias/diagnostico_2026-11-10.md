@@ -27,6 +27,10 @@ Os parâmetros sysfs de execução não impediram, por si sós, os logs LPS do d
 
 Como controle adicional, o próprio console enviou 120 pings ao gateway `192.168.0.1`: 120 recebidos, 0% de perda, RTT médio 16,339 ms, máximo 145,866 ms. Esse teste foi unidirecional iniciado no console e confirma resposta do roteador nesse intervalo; não identifica sozinho a origem da perda no teste PC→console.
 
+## Alimentação OTG
+
+A inspeção somente leitura encontrou `vbus_host` habilitado e não encontrou arquivos de limite de corrente nos reguladores consultados (`vcc5v0_sys`, `vbus_host`, `boost`, `OTG_SWITCH`). O recorte correspondente de `dmesg` não continha mensagens de subtensão, sobrecorrente, reset USB ou falha do `8188fu`. Isso não mede a corrente real nem exclui queda de tensão sob carga; apenas mostra que não há controle de corrente ajustável exposto no sysfs consultado. Não foi alterado governor, regulador ou DTB. Aumentar clocks/consumo do SoC não é um método fundamentado para elevar a capacidade elétrica da OTG; se suspeitar de alimentação insuficiente, a prova prática mais segura é um hub OTG alimentado.
+
 ## Patch
 
 `install.sh` verifica `0bda:f179` e o driver antes de alterar o sistema. Cria um arquivo exclusivo em `/etc/modprobe.d/`, guarda apenas o UUID do perfil e o valor anterior de power-save (não guarda SSID, chave, MAC nem BSSID) e aplica `802-11-wireless.powersave=2`. Não desliga a conexão nem reinicia o console automaticamente.
