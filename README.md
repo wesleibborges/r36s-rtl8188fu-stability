@@ -4,6 +4,12 @@ Configuração reversível para adaptadores USB Realtek RTL8188FTV (`0bda:f179`)
 
 O projeto **não substitui nem recompila o driver**. Ele aplica opções documentadas pelo projeto upstream do `rtl8188fu` e desativa o power-save no perfil Wi-Fi ativo. A instalação é específica para o adaptador confirmado neste console.
 
+## Estrutura do repositório
+
+- [`install.sh`](install.sh) — instala o ajuste: valida adaptador e driver, guarda o estado original, grava a configuração em `/etc/modprobe.d/` e desativa o power-save no perfil Wi-Fi ativo.
+- [`remove.sh`](remove.sh) — reverte o ajuste: restaura o valor original de power-save e remove somente os arquivos criados por este projeto.
+- [`patches/`](patches/) — reúne a configuração do módulo `8188fu` com os parâmetros de power management indicados pelo mantenedor do driver.
+
 ## Evidência no aparelho
 
 - Adaptador USB: Realtek `0bda:f179`, nome exibido `802.11n`.
